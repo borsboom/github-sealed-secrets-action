@@ -1,0 +1,16 @@
+name: "Github sealed secrets"
+description: "Update Kubernetes sealedsecrets from Github secrets"
+author: "Emanuel Borsboom"
+inputs:
+  kubernetes_namespace:
+    description: "Kubernetes namespace in which to create the secrets"
+    required: true
+  environment:
+    description: "Name of environment (dev/test/staging/prod/shared)"
+    required: true
+  github_secrets_json:
+    description: "A JSON object containing Github secrets and their values"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
