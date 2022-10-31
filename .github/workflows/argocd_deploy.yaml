@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Configure repo #@@@
         uses: borsboom/seal-github-secrets-action/.github/actions/config_repo@main #@@@
       - name: Update app in DEV #@@@
