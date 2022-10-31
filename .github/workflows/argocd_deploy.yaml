@@ -49,8 +49,6 @@ jobs:
           argocd_app: ${{ inputs.argocd_app }}
           argocd_from_overlay: ${{ inputs.argocd_update_overlays }}
           argocd_to_overlays: ${{ inputs.argocd_promote_overlays }}
-          image_tag: ${{ inputs.image_tag }}
-          commit_ref: ${{ inputs.commit_ref }}
       - name: Push repo @@@
         uses: borsboom/seal-github-secrets-action/.github/actions/push_repo@main #@@@
 

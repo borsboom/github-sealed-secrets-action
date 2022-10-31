@@ -15,6 +15,7 @@ runs:
   steps:
     #@@@ INLINE THE SCRIPT?
     - run: |
+        set -x #@@@
         from_overlay="${{ inputs.argocd_from_overlay }}"
         for to_overlay in ${{ inputs.argocd_to_overlays }}; do
           "${{ github.action_path }}/promote_app.sh" \
