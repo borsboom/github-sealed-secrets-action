@@ -31,9 +31,9 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v2
       - name: Prepare repo #@@@
-        uses: borsboom/seal-github-secrets-action/.github/actions/prepare_repo #@@@
+        uses: borsboom/seal-github-secrets-action/.github/actions/prepare_repo@main #@@@
       - name: Update app in DEV #@@@
-        uses: borsboom/seal-github-secrets-action/.github/actions/update_app #@@@
+        uses: borsboom/seal-github-secrets-action/.github/actions/update_app@main #@@@
         with:
           #@@@ NEED github.event.?
           argocd_app: ${{ github.event.inputs.argocd_app }}
