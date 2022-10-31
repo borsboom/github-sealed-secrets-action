@@ -1,0 +1,25 @@
+name: Promote app #@@@
+description: Promote app for @@@ #@@@
+inputs:
+  argocd_app:
+    description: Application name #@@@
+    required: true
+  argocd_from_overlay:
+    description: From overlay name #@@@
+    required: true
+  argocd_to_overlays:
+    description: To overlay names (space separated) #@@@
+    required: true
+runs:
+  using: composite
+  steps:
+    #@@@ INLINE THE SCRIPT?
+    - run: |
+        from_overlay="${{ inputs.argocd_from_overlay }}"
+        for to_overlay in ${{ inputs.argocd_to_overlays }}; do
+          "${{ github.action_path }}/promote_app.sh" \
+            "${{ inputs.argocd_app }}" \
+            "${from_overlay% *}"
+            "$to_overlay"
+        done
+      shell: bash
