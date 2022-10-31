@@ -20,7 +20,7 @@
 #
 
 set -eux -o pipefail
-cd "$(dirname "$0")/.."
+#@@@ cd "$(dirname "$0")/.."
 
 if [[ "$#" -lt 3 ]]; then
     echo "$0: Invalid arguments; see header of script for usage information." >&2

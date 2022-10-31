@@ -28,7 +28,7 @@
 #   - ARGOCD_OPTS: Default options for ArgoCD CLI.
 #
 set -eu -o pipefail
-cd "$(dirname "$0")/.."
+#@@@ cd "$(dirname "$0")/.."
 ARGOCD_CLI_BIN="${ARGOCD_CLI_BIN:-./argocd}"
 ARGOCD_CLI_URL="${ARGOCD_CLI_URL:-https://${ARGOCD_SERVER#grpc-}/download/argocd-linux-amd64}"
 APP_PREFIX="$(basename "$PWD")"; APP_PREFIX="${APP_PREFIX%-env}"
