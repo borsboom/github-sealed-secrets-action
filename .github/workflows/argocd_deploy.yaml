@@ -9,10 +9,14 @@ on:
         description: Application name #@@@
         type: string
         required: true
-      argocd_overlays:
-        description: Overlay names #@@@
+      argocd_update_overlays:
+        description: Update overlay names (space separated) #@@@
         type: string
         default: dev
+      argocd_promote_overlays:
+        description: Promote overlay names (space separated) #@@@
+        type: string
+        default: test
       image_tag:
         description: Docker image tag #@@@
         type: string
@@ -32,18 +36,21 @@ jobs:
         uses: actions/checkout@v3
       - name: Configure repo #@@@
         uses: borsboom/seal-github-secrets-action/.github/actions/config_repo@main #@@@
-      - name: Update app in DEV #@@@
+      - name: Update app #@@@
         uses: borsboom/seal-github-secrets-action/.github/actions/update_app@main #@@@
         with:
           argocd_app: ${{ inputs.argocd_app }}
-          argocd_overlays: ${{ inputs.argocd_overlays }}
+          argocd_overlays: ${{ inputs.argocd_update_overlays }}
           image_tag: ${{ inputs.image_tag }}
           commit_ref: ${{ inputs.commit_ref }}
-
-      #@@@ - name: Commit changes and push to Kustomization
-      #@@@   run: |
-      #@@@     scripts/promote_app.sh "${{ inputs.argocd_app }}" dev test
-
+      - name: Promote app #@@@
+        uses: borsboom/seal-github-secrets-action/.github/actions/promote_app@main #@@@
+        with:
+          argocd_app: ${{ inputs.argocd_app }}
+          argocd_from_overlay: ${{ inputs.argocd_update_overlays }}
+          argocd_to_overlays: ${{ inputs.argocd_promote_overlays }}
+          image_tag: ${{ inputs.image_tag }}
+          commit_ref: ${{ inputs.commit_ref }}
       - name: Push repo @@@
         uses: borsboom/seal-github-secrets-action/.github/actions/push_repo@main #@@@
 

@@ -1,5 +1,5 @@
-name: Prepare repo #@@@
-description: Prepare repo for @@@ #@@@
+name: Update app #@@@
+description: Update app for @@@ #@@@
 inputs:
   argocd_app:
     description: Application name #@@@
