@@ -1,5 +1,5 @@
-name: Update app #@@@
-description: Update app for @@@ #@@@
+name: Configure repo #@@@
+description: Configure repo for @@@ #@@@
 inputs:
   git_user_name:
     description: Git commit user name #@@@
