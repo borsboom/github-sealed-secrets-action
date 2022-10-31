@@ -3,15 +3,19 @@ description: Prepare repo for @@@ #@@@
 inputs:
   argocd_app:
     description: Application name #@@@
+    type: string
     required: true
   argocd_overlay:
     description: Overlay name #@@@
+    type: string
     required: true
   image_tag:
     description: Docker image tag #@@@
+    type: string
     required: true
   commit_ref:
     description: Base Kustomization commit reference #@@@
+    type: string
     required: true
 runs:
   using: composite

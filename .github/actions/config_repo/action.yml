@@ -3,10 +3,12 @@ description: Update app for @@@ #@@@
 inputs:
   git_user_name:
     description: Git commit user name #@@@
+    type: string
     required: true
     default: Build Server
   git_user_email:
     description: Git commit user email address #@@@
+    type: string
     required: true
     default: build@bestbuy.com
 runs:
