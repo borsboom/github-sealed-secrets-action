@@ -1,0 +1,26 @@
+name: Prepare repo #@@@
+description: Prepare repo for @@@ #@@@
+inputs:
+  argocd_app:
+    description: Application name #@@@
+    required: true
+  argocd_overlay:
+    description: Overlay name #@@@
+    required: true
+  image_tag:
+    description: Docker image tag #@@@
+    required: true
+  commit_ref:
+    description: Base Kustomization commit reference #@@@
+    required: true
+runs:
+  using: composite
+  steps:
+    #@@@ INLINE THE SCRIPT?
+    - run: |
+        "${{ github.action_path }}/update_app.sh" \
+          "${{ inputs.argocd_app }}" \
+          "${{ inputs.argocd_overlay }}" \
+          "${{ inputs.image_tag }}" \
+          "${{ inputs.commit_ref }}"
+      shell: bash

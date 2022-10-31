@@ -1,0 +1,18 @@
+name: Update app #@@@
+description: Update app for @@@ #@@@
+inputs:
+  git_user_name:
+    description: Git commit user name #@@@
+    required: true
+    default: Build Server
+  git_user_email:
+    description: Git commit user email address #@@@
+    required: true
+    default: build@bestbuy.com
+runs:
+  using: composite
+  steps:
+    - run: |
+        git config user.name "${{ inputs.git_user_name }}"
+        git config user.email "${{ inputs.git_user_email }}"
+      shell: bash

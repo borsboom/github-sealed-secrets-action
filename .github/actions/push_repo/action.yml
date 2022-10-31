@@ -1,0 +1,7 @@
+name: Push repo #@@@
+description: Push repo for @@@ #@@@
+runs:
+  using: composite
+  steps:
+    - run: git push
+      shell: bash

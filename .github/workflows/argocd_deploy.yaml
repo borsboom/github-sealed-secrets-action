@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+#@@@ RENAME TO MAKE CLEAR IT'S FOR DEV (AND TEST, KIND OF)
+#@@@ OR JUST ADD PARAMETERS THAT CAN BE OVERRIDDEN
+name: Update and sync ArgoCD
+on:
+  workflow_call:
+    inputs:
+      argocd_app:
+        description: Application name #@@@
+        required: true
+      argocd_overlay:
+        description: Overlay name #@@@
+        required: true
+        default: dev
+      image_tag:
+        description: Docker image tag #@@@
+        required: true
+      commit_ref:
+        description: Base Kustomization commit reference #@@@
+        required: true
+
+jobs:
+  build:
+    name: Deploy #@@@
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: Prepare repo @@@
+        uses: ./.github/actions/prepare_repo
+      - name: Update app in DEV @@@
+        uses: ./.github/actions/update_app
+        with:
+          #@@@ NEED github.event.?
+          argocd_app: ${{ github.event.inputs.argocd_app }}
+          argocd_overlay: ${{ github.event.inputs.argocd_overlay }}
+          image_tag: ${{ github.event.inputs.image_tag }}
+          commit_ref: ${{ github.event.inputs.commit_ref }}
+
+      #@@@ - name: Commit changes and push to Kustomization
+      #@@@   run: |
+      #@@@     scripts/promote_app.sh "${{ github.event.inputs.argocd_app }}" dev test
+
+      #@@@ - name: Push repo @@@
+      #@@@   uses: ./actions/push_repo
+
+      #@@@ - name: Trigger ArgoCD to sync the app and wait for it to complete
+      #@@@   env:
+      #@@@     ARGOCD_SERVER: kube-aws-grcp-argocd.shared.bbyhealth.com
+      #@@@     ARGOCD_AUTH_TOKEN: ${{ secrets.KUBE360_AWS_ARGOCD_AUTH_TOKEN }}
+      #@@@   run: scripts/sync_app.sh "${{ github.event.inputs.argocd_app }}" dev
