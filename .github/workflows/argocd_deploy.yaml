@@ -9,8 +9,8 @@ on:
         description: Application name #@@@
         type: string
         required: true
-      argocd_overlay:
-        description: Overlay name #@@@
+      argocd_overlays:
+        description: Overlay names #@@@
         type: string
         default: dev
       image_tag:
@@ -36,7 +36,7 @@ jobs:
         uses: borsboom/seal-github-secrets-action/.github/actions/update_app@main #@@@
         with:
           argocd_app: ${{ inputs.argocd_app }}
-          argocd_overlay: ${{ inputs.argocd_overlay }}
+          argocd_overlays: ${{ inputs.argocd_overlays }}
           image_tag: ${{ inputs.image_tag }}
           commit_ref: ${{ inputs.commit_ref }}
 
@@ -44,8 +44,8 @@ jobs:
       #@@@   run: |
       #@@@     scripts/promote_app.sh "${{ inputs.argocd_app }}" dev test
 
-      #@@@ - name: Push repo @@@
-      #@@@   uses: ./actions/push_repo
+      - name: Push repo @@@
+        uses: ./actions/push_repo
 
       #@@@ - name: Trigger ArgoCD to sync the app and wait for it to complete
       #@@@   env:

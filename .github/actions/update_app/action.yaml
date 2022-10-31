@@ -4,8 +4,8 @@ inputs:
   argocd_app:
     description: Application name #@@@
     required: true
-  argocd_overlay:
-    description: Overlay name #@@@
+  argocd_overlays:
+    description: Overlay names (space separated) #@@@
     required: true
   image_tag:
     description: Docker image tag #@@@
@@ -18,9 +18,11 @@ runs:
   steps:
     #@@@ INLINE THE SCRIPT?
     - run: |
-        "${{ github.action_path }}/update_app.sh" \
-          "${{ inputs.argocd_app }}" \
-          "${{ inputs.argocd_overlay }}" \
-          "${{ inputs.image_tag }}" \
-          "${{ inputs.commit_ref }}"
+        for overlay in "${{ inputs.argocd_overlays }}"; do
+          "${{ github.action_path }}/update_app.sh" \
+            "${{ inputs.argocd_app }}" \
+            "$overlay" \
+            "${{ inputs.image_tag }}" \
+            "${{ inputs.commit_ref }}";
+        fi
       shell: bash
