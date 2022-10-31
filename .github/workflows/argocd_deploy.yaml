@@ -35,15 +35,14 @@ jobs:
       - name: Update app in DEV #@@@
         uses: borsboom/seal-github-secrets-action/.github/actions/update_app@main #@@@
         with:
-          #@@@ NEED github.event.?
-          argocd_app: ${{ github.event.inputs.argocd_app }}
-          argocd_overlay: ${{ github.event.inputs.argocd_overlay }}
-          image_tag: ${{ github.event.inputs.image_tag }}
-          commit_ref: ${{ github.event.inputs.commit_ref }}
+          argocd_app: ${{ inputs.argocd_app }}
+          argocd_overlay: ${{ inputs.argocd_overlay }}
+          image_tag: ${{ inputs.image_tag }}
+          commit_ref: ${{ inputs.commit_ref }}
 
       #@@@ - name: Commit changes and push to Kustomization
       #@@@   run: |
-      #@@@     scripts/promote_app.sh "${{ github.event.inputs.argocd_app }}" dev test
+      #@@@     scripts/promote_app.sh "${{ inputs.argocd_app }}" dev test
 
       #@@@ - name: Push repo @@@
       #@@@   uses: ./actions/push_repo
@@ -52,4 +51,4 @@ jobs:
       #@@@   env:
       #@@@     ARGOCD_SERVER: kube-aws-grcp-argocd.shared.bbyhealth.com
       #@@@     ARGOCD_AUTH_TOKEN: ${{ secrets.KUBE360_AWS_ARGOCD_AUTH_TOKEN }}
-      #@@@   run: scripts/sync_app.sh "${{ github.event.inputs.argocd_app }}" dev
+      #@@@   run: scripts/sync_app.sh "${{ inputs.argocd_app }}" dev
