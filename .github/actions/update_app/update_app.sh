@@ -19,7 +19,7 @@
 #     update to (if unspecified, do not change the base ref)
 #
 
-set -eux -o pipefail
+set -eu -o pipefail
 #@@@ cd "$(dirname "$0")/.."
 
 if [[ "$#" -lt 3 ]]; then

@@ -45,7 +45,7 @@ jobs:
       #@@@     scripts/promote_app.sh "${{ inputs.argocd_app }}" dev test
 
       - name: Push repo @@@
-        uses: ./actions/push_repo
+        uses: borsboom/seal-github-secrets-action/.github/actions/push_repo
 
       #@@@ - name: Trigger ArgoCD to sync the app and wait for it to complete
       #@@@   env:
