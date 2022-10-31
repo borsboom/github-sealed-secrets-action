@@ -20,7 +20,7 @@ runs:
         for to_overlay in ${{ inputs.argocd_to_overlays }}; do
           "${{ github.action_path }}/promote_app.sh" \
             "${{ inputs.argocd_app }}" \
-            "${from_overlay% *}"
+            "${from_overlay% *}" \
             "$to_overlay"
         done
       shell: bash
