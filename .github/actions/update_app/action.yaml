@@ -18,7 +18,7 @@ runs:
   steps:
     #@@@ INLINE THE SCRIPT?
     - run: |
-        for overlay in "${{ inputs.argocd_overlays }}"; do
+        for overlay in ${{ inputs.argocd_overlays }}; do
           "${{ github.action_path }}/update_app.sh" \
             "${{ inputs.argocd_app }}" \
             "$overlay" \
