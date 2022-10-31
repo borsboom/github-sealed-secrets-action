@@ -12,7 +12,6 @@ on:
       argocd_overlay:
         description: Overlay name #@@@
         type: string
-        required: true
         default: dev
       image_tag:
         description: Docker image tag #@@@
