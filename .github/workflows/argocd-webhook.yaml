@@ -19,4 +19,4 @@ jobs:
         GITHUB_EVENT_JSON: ${{ toJson(github.event) }}
         ARGOCD_WEBHOOK_URL: ${{ inputs.ARGOCD_WEBHOOK_URL }}
       run: |
-        curl --header "X-GitHub-Event: push" --header "Content-Type: application/json" -X POST --data "$GITHUB_EVENT_JSON" "$ARGOCD_WEBHOOK_URL"
+        curl -sSL --fail --header "X-GitHub-Event: push" --header "Content-Type: application/json" -X POST --data "$GITHUB_EVENT_JSON" "$ARGOCD_WEBHOOK_URL"
