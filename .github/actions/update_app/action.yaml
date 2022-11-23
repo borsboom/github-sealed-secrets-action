@@ -1,28 +1,24 @@
 name: Update app #@@@
 description: Update app for @@@ #@@@
 inputs:
-  argocd_app:
-    description: Application name #@@@
+  ARGOCD_APP:
+    description: Application name
     required: true
-  argocd_overlays:
-    description: Overlay names (space separated) #@@@
+  ARGOCD_OVERLAYS:
+    description: Overlay names (space separated)
     required: true
-  image_tag:
-    description: Docker image tag #@@@
+  IMAGE_TAG:
+    description: New docker image tag
     required: true
-  commit_ref:
-    description: Base Kustomization commit reference #@@@
+  BASE_COMMIT_REF:
+    description: New base Kustomization commit reference
     required: true
 runs:
   using: composite
   steps:
     #@@@ INLINE THE SCRIPT?
     - run: |
-        for overlay in ${{ inputs.argocd_overlays }}; do
-          "${{ github.action_path }}/update_app.sh" \
-            "${{ inputs.argocd_app }}" \
-            "$overlay" \
-            "${{ inputs.image_tag }}" \
-            "${{ inputs.commit_ref }}";
+        for overlay in ${{ inputs.ARGOCD_OVERLAYS }}; do
+          "${{ github.action_path }}/update_app.sh" "${{ inputs.ARGOCD_APP }}" "$overlay" "${{ inputs.IMAGE_TAG }}" "${{ inputs.BASE_COMMIT_REF }}"
         done
       shell: bash

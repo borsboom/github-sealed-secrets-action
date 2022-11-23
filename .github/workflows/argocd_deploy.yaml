@@ -1,32 +1,47 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 #@@@ RENAME TO MAKE CLEAR IT'S FOR DEV (AND TEST, KIND OF)
 #@@@ OR JUST ADD PARAMETERS THAT CAN BE OVERRIDDEN
+#@@@ MAKE ALL INPUTS IN ALL CAPS
 name: Update and sync ArgoCD
+
 on:
   workflow_call:
     inputs:
-      argocd_app:
-        description: Application name #@@@
+      ARGOCD_APP:
+        description: Application name
         type: string
         required: true
-      argocd_update_overlays:
-        description: Update overlay names (space separated) #@@@
+      ARGOCD_UPDATE_OVERLAYS:
+        description: Update overlay names (space separated)
         type: string
-        default: dev
-      argocd_promote_overlays:
-        description: Promote overlay names (space separated) #@@@
+        default: ''
+      ARGOCD_PROMOTE_FROM_OVERLAY:
+        description: Promote from overlay name
         type: string
-        default: test
-      image_tag:
-        description: Docker image tag #@@@
+        default: ''
+      ARGOCD_PROMOTE_TO_OVERLAYS:
+        description: Promote to overlay names (space separated)
+        type: string
+        default: ''
+      ARGOCD_SYNC_OVERLAYS:
+        description: Sync to overlay names (space separated)
+        type: string
+        default: ''
+      IMAGE_TAG:
+        description: Docker image tag
         type: string
         required: true
-      commit_ref:
-        description: Base Kustomization commit reference #@@@
+      BASE_COMMIT_REF:
+        description: Base Kustomization commit reference
         type: string
+        required: true
+    secrets:
+      ARGOCD_AUTH_TOKEN:
+        description: ArgoCD auth token
         required: true
 
 jobs:
+
   build:
     name: Deploy #@@@
     runs-on: ubuntu-latest #@@@ [self-hosted, linux]
@@ -34,26 +49,42 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
+
       - name: Configure repo #@@@
         uses: borsboom/seal-github-secrets-action/.github/actions/config_repo@main #@@@
+
       - name: Update app #@@@
+        if: inputs.ARGOCD_UPDATE_OVERLAYS != ''
         uses: borsboom/seal-github-secrets-action/.github/actions/update_app@main #@@@
         with:
-          argocd_app: ${{ inputs.argocd_app }}
-          argocd_overlays: ${{ inputs.argocd_update_overlays }}
-          image_tag: ${{ inputs.image_tag }}
-          commit_ref: ${{ inputs.commit_ref }}
+          ARGOCD_APP: ${{ inputs.ARGOCD_APP }}
+          ARGOCD_OVERLAYS: ${{ inputs.ARGOCD_UPDATE_OVERLAYS }}
+          IMAGE_TAG: ${{ inputs.IMAGE_TAG }}
+          BASE_COMMIT_REF: ${{ inputs.BASE_COMMIT_REF }}
+
       - name: Promote app #@@@
+        if: inputs.ARGOCD_PROMOTE_FROM_OVERLAY != '' && inputs.ARGOCD_PROMOTE_TO_OVERLAYS != ''
+        #@@@ USE './.github/actions' INSTEAD (FOR ALL ACTION USES)
         uses: borsboom/seal-github-secrets-action/.github/actions/promote_app@main #@@@
         with:
-          argocd_app: ${{ inputs.argocd_app }}
-          argocd_from_overlay: ${{ inputs.argocd_update_overlays }}
-          argocd_to_overlays: ${{ inputs.argocd_promote_overlays }}
-      - name: Push repo @@@
+          ARGOCD_APP: ${{ inputs.ARGOCD_APP }}
+          ARGOCD_FROM_OVERLAY: ${{ inputs.ARGOCD_PROMOTE_FROM_OVERLAY }}
+          ARGOCD_TO_OVERLAYS: ${{ inputs.ARGOCD_PROMOTE_TO_OVERLAYS }}
+
+      - name: Push repo #@@@
+        #@@@ CAN WE USE A PREEXISTING ACTION?
         uses: borsboom/seal-github-secrets-action/.github/actions/push_repo@main #@@@
+
+      - name: Sync app #@@@
+        if: inputs.ARGOCD_SYNC_OVERLAYS != ''
+        uses: borsboom/seal-github-secrets-action/.github/actions/sync_app@main #@@@
+        with:
+          ARGOCD_APP: ${{ inputs.ARGOCD_APP }}
+          ARGOCD_OVERLAYS: ${{ inputs.ARGOCD_SYNC_OVERLAYS }}
+          ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
 
       #@@@ - name: Trigger ArgoCD to sync the app and wait for it to complete
       #@@@   env:
       #@@@     ARGOCD_SERVER: kube-aws-grcp-argocd.shared.bbyhealth.com
       #@@@     ARGOCD_AUTH_TOKEN: ${{ secrets.KUBE360_AWS_ARGOCD_AUTH_TOKEN }}
-      #@@@   run: scripts/sync_app.sh "${{ inputs.argocd_app }}" dev
+      #@@@   run: scripts/sync_app.sh "${{ inputs.ARGOCD_APP }}" dev

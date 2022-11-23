@@ -1,12 +1,12 @@
 name: Configure repo #@@@
 description: Configure repo for @@@ #@@@
 inputs:
-  git_user_name:
+  GIT_USER_NAME:
     description: Git commit user name #@@@
     type: string
     required: true
     default: Build Server
-  git_user_email:
+  GIT_USER_EMAIL:
     description: Git commit user email address #@@@
     type: string
     required: true
@@ -14,7 +14,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: git config user.name "${{ inputs.git_user_name }}"
+    - run: git config user.name "${{ inputs.GIT_USER_NAME }}"
       shell: bash
-    - run: git config user.email "${{ inputs.git_user_email }}"
+    - run: git config user.email "${{ inputs.GIT_USER_EMAIL }}"
       shell: bash

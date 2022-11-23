@@ -39,6 +39,7 @@ if [[ "$#" -lt 2 ]]; then
 fi
 APP=$1; shift
 
+#@@@ DO WE NEED TO DOWNLOAD THE ARGOCD BINARY?
 if [[ ! -f "${ARGOCD_CLI_BIN}" ]]; then
     (set -x
         curl -sSL --fail -o "${ARGOCD_CLI_BIN}" ${ARGOCD_CLI_URL}
