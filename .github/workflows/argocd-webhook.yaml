@@ -1,0 +1,22 @@
+name: Trigger ArgoCD webhook
+on:
+  workflow_call:
+    inputs:
+      ARGOCD_WEBHOOK_URL:
+        description: Endpoint for webhook delivery
+        type: string
+        default: https://kube-aws-grcp-argocd.shared.bbyhealth.com/api/webhook/
+      RUNS_ON:
+        description: Label of runner to use
+        type: string
+        default: self-hosted
+jobs:
+  build:
+    runs-on: ${{ inputs.RUNS_ON }}
+    steps:
+    - name: Trigger ArgoCD webhook
+      env:
+        GITHUB_EVENT_JSON: ${{ toJson(github.event) }}
+        ARGOCD_WEBHOOK_URL: ${{ inputs.ARGOCD_WEBHOOK_URL }}
+      run: |
+        curl --header "X-GitHub-Event: push" --header "Content-Type: application/json" -X POST --data "$GITHUB_EVENT_JSON" "$ARGOCD_WEBHOOK_URL"
