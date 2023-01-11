@@ -1,12 +1,10 @@
 name: Test action
 description: Just a test...
 inputs:
-
   ARGOCD_BASE_REF:
     required: true
     default: "" #@@@ JUST SET REQUIRED to 'false' INSTEAD?
-    description: @@@
-
+    description: #@@@
 runs:
   using: "composite"
   steps:
