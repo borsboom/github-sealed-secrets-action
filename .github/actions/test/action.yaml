@@ -3,7 +3,7 @@ description: Just a test...
 inputs:
   ARGOCD_BASE_REF:
     required: true
-    default: "" #@@@ JUST SET REQUIRED to 'false' INSTEAD?
+    default: ${{ github.sha }} #@@@ JUST SET REQUIRED to 'false' INSTEAD?
     description: #@@@
 runs:
   using: "composite"
