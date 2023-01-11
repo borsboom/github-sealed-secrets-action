@@ -1,8 +1,7 @@
 name: Test workflow
 
 on:
-  workflow_call:
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 jobs:
 
