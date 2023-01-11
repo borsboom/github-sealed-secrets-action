@@ -1,0 +1,16 @@
+name: Test action
+description: Just a test...
+inputs:
+
+  ARGOCD_BASE_REF:
+    required: true
+    default: "" #@@@ JUST SET REQUIRED to 'false' INSTEAD?
+    description: @@@
+
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        echo ARGOCD_BASE_REF: ${{ inputs.ARGOCD_BASE_REF }}
+        echo GITHUB.SHA: ${{ github.sha }}
+      shell: bash
