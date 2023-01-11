@@ -16,5 +16,5 @@ jobs:
 
       - name: Test action
         uses: borsboom/seal-github-secrets-action/.github/actions/test@main
-        with:
-          ARGOCD_BASE_REF: test-base-ref
+        # with:
+        #   ARGOCD_BASE_REF: test-base-ref
